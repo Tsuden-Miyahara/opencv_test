@@ -105,17 +105,17 @@ class Tracker:
         ids = np.nanargmax(similaritys, axis=1)
 
         for i, similarity in enumerate(similaritys):
-            persionId = ids[i]
-            d = self.__getDistance(persons[i], persionId)
-            print("persionId:{} {} distance:{}".format(persionId,similarity[persionId], d))
+            personId = ids[i]
+            d = self.__getDistance(persons[i], personId)
+            print("personId:{} {} distance:{}".format(personId,similarity[personId], d))
             # 0.95以上で、重なりの無い場合、識別情報を更新する
-            if(similarity[persionId] > 0.95):
+            if(similarity[personId] > 0.95):
                 if(self.__isOverlap(persons, i) == False):
-                    self.identifysDb[persionId] = identifys[i]
+                    self.identifysDb[personId] = identifys[i]
             # 0.5以下で、距離が離れている場合、新規に登録する
-            elif(similarity[persionId] < 0.5):
+            elif(similarity[personId] < 0.5):
                 if(d > 500):
-                    print("distance:{} similarity:{}".format(d, similarity[persionId]))
+                    print("distance:{} similarity:{}".format(d, similarity[personId]))
                     self.identifysDb = np.vstack((self.identifysDb, identifys[i]))
                     self.center.append(self.__getCenter(persons[i]))
                     ids[i] = len(self.identifysDb) - 1
