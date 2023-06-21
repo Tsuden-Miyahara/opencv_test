@@ -99,7 +99,7 @@ class Tracker:
             for person in persons:
                 self.center.append(self.__getCenter(person))
         
-        print("input: {} DB:{}".format(len(identifys), len(self.identifysDb)))
+        #print("input: {} DB:{}".format(len(identifys), len(self.identifysDb)))
         similaritys = self.__cos_similarity(identifys, self.identifysDb)
         similaritys[np.isnan(similaritys)] = 0
         ids = np.nanargmax(similaritys, axis=1)
@@ -107,7 +107,7 @@ class Tracker:
         for i, similarity in enumerate(similaritys):
             personId = ids[i]
             d = self.__getDistance(persons[i], personId)
-            print("personId:{} {} distance:{}".format(personId,similarity[personId], d))
+            #print("personId:{} {} distance:{}".format(personId,similarity[personId], d))
             # 0.95以上で、重なりの無い場合、識別情報を更新する
             if(similarity[personId] > 0.95):
                 if(self.__isOverlap(persons, i) == False):
@@ -115,13 +115,13 @@ class Tracker:
             # 0.5以下で、距離が離れている場合、新規に登録する
             elif(similarity[personId] < 0.5):
                 if(d > 500):
-                    print("distance:{} similarity:{}".format(d, similarity[personId]))
+                    #print("distance:{} similarity:{}".format(d, similarity[personId]))
                     self.identifysDb = np.vstack((self.identifysDb, identifys[i]))
                     self.center.append(self.__getCenter(persons[i]))
                     ids[i] = len(self.identifysDb) - 1
-                    print("> append DB size:{}".format(len(self.identifysDb)))
+                    #print("> append DB size:{}".format(len(self.identifysDb)))
 
-        print(ids)
+        #print(ids)
         # 重複がある場合は、信頼度の低い方を無効化する
         for i, a in enumerate(ids):
             for e, b in enumerate(ids):
@@ -132,7 +132,7 @@ class Tracker:
                         ids[i] = -1
                     else:
                         ids[e] = -1
-        print(ids)
+        #print(ids)
         return ids
 
     # コサイン類似度
@@ -144,6 +144,8 @@ class Tracker:
             np.linalg.norm(X.T, axis=0).reshape(m, 1) * np.linalg.norm(Y, axis=0)
         )
 
+def get_person(detection):
+    return [int(v) for v in detection[:4]]
 
 device = "CPU"
 cpu_extension = None
@@ -151,14 +153,21 @@ ie_core = IECore()
 if device == "CPU" and cpu_extension:
     ie_core.add_extension(cpu_extension, "CPU")
 
-THRESHOLD= 0.7
+THRESHOLD= 0.65
 person_detector = PersonDetector("model/person-detection-retail-0013", device, ie_core, THRESHOLD, num_requests=2)
 person_reidentification = PersonReidentification("model/person-reidentification-retail-0265", device, ie_core, THRESHOLD, num_requests=2)
 tracker = Tracker()
 
 
-SCALE = 1.0
+SCALE = 0.75
 
+movies = [
+  'pexels-richarles-moral-1338598-1920x1080-30fps.mp4',
+  'pexels-pixabay-855565-1920x1080-24fps.mp4',
+  'istockphoto-1141803334-640_adpp_is.mp4'
+]
+# cap = cv2.VideoCapture(f'test/movie/{movies[0]}')
+# Webカメラ
 cap = cv2.VideoCapture(0)
 TRACKING_MAX=50
 colors = []
@@ -168,19 +177,27 @@ for i in range(TRACKING_MAX):
         random.randint(80, 255),
         random.randint(80, 255)
     ))
-
+n = 0
 while cap.isOpened():
+    n += 1
     ret, frame = cap.read()
+    
+    if not ret:# ループ再生
+        cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+        continue
+    if(frame is None):
+        continue
+
+    if n % 4:
+        continue
+
     detections = person_detector.infer(frame)
     persons = [person[:4] for person in detections]
 
     identifys = np.zeros((len(persons), 255))
 
     for i, person in enumerate(detections):
-        x1 = int(person[0])
-        y1 = int(person[1])
-        x2 = int(person[2])
-        y2 = int(person[3])
+        x1, y1, x2, y2 = get_person(person)
         conf = person[4]
         
         img = frame[y1:y2, x1:x2]
@@ -191,9 +208,10 @@ while cap.isOpened():
     ids = tracker.getIds(identifys, persons)
     
     for i, person in enumerate(detections):
+        x1, y1, x2, y2 = get_person(person)
         if ids[i] == -1: continue
-        frame = cv2.rectangle(frame, (x1, y1), (x2, y2), colors[i], int(2 * SCALE))
-        frame = cv2.putText(frame, '[ID {}] {:.02f}%'.format(int(ids[i]), conf * 100), (x1, y1), cv2.FONT_HERSHEY_PLAIN, int(1 * SCALE), colors[i], int(1 * SCALE), cv2.LINE_AA )
+        frame = cv2.rectangle(frame, (x1, y1), (x2, y2), colors[i], 2)
+        frame = cv2.putText(frame, '[ID {}] {:.02f}%'.format(int(ids[i]), conf * 100), (x1, y1), cv2.FONT_HERSHEY_PLAIN, 1, colors[i], 1, cv2.LINE_AA )
 
     h, w = frame.shape[:2]
     frame = cv2.resize(frame, ((int(w * SCALE), int(h * SCALE))))
