@@ -108,19 +108,18 @@ while True:
         if not os.path.exists('faces'):
             os.mkdir('faces')
         cpath = lambda n, ext: f"faces/{str(n).zfill(4)}{ext}"
-        j = 0
-        while True:
-            j += 1
-            if not os.path.exists( cpath(j, '.npy') ):
-                for i, out in enumerate(outs):
-                    #cv2.imwrite(cpath(i + j, '.jpg'), out)
+        i = 0
+        for out in outs:
+            while True:
+                i += 1
+                if not os.path.exists( cpath(i, '.npy') ):
                     f = face_recognizer.feature(out)
-                    n = cpath(i + j, '')
+                    n = cpath(i, '')
                     np.save(n, f)
                     print(f'> {n}.npy')
                     print(f)
                     print('=' * 10)
-                break
+                    break
         FEATURES = load_features()
     elif k == ord('q') or k == 27: # ESC
         break
