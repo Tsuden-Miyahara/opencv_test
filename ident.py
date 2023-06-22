@@ -166,9 +166,9 @@ movies = [
   'pexels-pixabay-855565-1920x1080-24fps.mp4',
   'istockphoto-1141803334-640_adpp_is.mp4'
 ]
-cap = cv2.VideoCapture(f'test/movie/{movies[0]}')
+# cap = cv2.VideoCapture(f'test/movie/{movies[0]}')
 # Webカメラ
-# cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0)
 TRACKING_MAX=50
 colors = []
 for i in range(TRACKING_MAX):
