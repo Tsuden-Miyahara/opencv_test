@@ -108,13 +108,13 @@ class Tracker:
             personId = ids[i]
             d = self.__getDistance(persons[i], personId)
             #print("personId:{} {} distance:{}".format(personId,similarity[personId], d))
-            # 0.95以上で、重なりの無い場合、識別情報を更新する
-            if(similarity[personId] > 0.95):
+            # 0.9以上で、重なりの無い場合、識別情報を更新する
+            if(similarity[personId] > 0.9):
                 if(self.__isOverlap(persons, i) == False):
                     self.identifysDb[personId] = identifys[i]
-            # 0.5以下で、距離が離れている場合、新規に登録する
-            elif(similarity[personId] < 0.5):
-                if(d > 500):
+            # 0.4以下で、距離が離れている場合、新規に登録する
+            elif(similarity[personId] < 0.4):
+                if(d > 800):
                     #print("distance:{} similarity:{}".format(d, similarity[personId]))
                     self.identifysDb = np.vstack((self.identifysDb, identifys[i]))
                     self.center.append(self.__getCenter(persons[i]))
@@ -166,9 +166,9 @@ movies = [
   'pexels-pixabay-855565-1920x1080-24fps.mp4',
   'istockphoto-1141803334-640_adpp_is.mp4'
 ]
-# cap = cv2.VideoCapture(f'test/movie/{movies[0]}')
+cap = cv2.VideoCapture(f'test/movie/{movies[0]}')
 # Webカメラ
-cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture(0)
 TRACKING_MAX=50
 colors = []
 for i in range(TRACKING_MAX):
