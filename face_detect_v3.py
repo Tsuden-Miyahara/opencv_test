@@ -27,15 +27,16 @@ def get_hash_pass():
     return f'tsuden_{hashlib.sha256(txt.encode()).hexdigest()}_guest'
 
 
-# main
+# variables start
 FEATURES = load_features()
 
 COSINE_THRESHOLD = 0.72
 
 PASS_SCORE = 10
+
 QR_PASSWORD = get_hash_pass()
 QR_MASTER_PASSWORD = f'tsuden_{hashlib.sha256("19760312".encode()).hexdigest()}_master'
-
+# variables end
 
 def create_new_qr(pswrd, name):
     qr = qrcode.make(pswrd)
