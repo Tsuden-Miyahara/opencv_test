@@ -1,0 +1,543 @@
+<?xml version="1.0"?>
+<mapping>
+	<map>
+		<framework name="input" output_port_id="input" />
+		<IR name="input" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="319" output_port_id="319" />
+		<IR name="319" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_0" output_port_id="318" />
+		<IR name="Conv_0" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_1" output_port_id="179" />
+		<IR name="Relu_1" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model0.conv2.conv1.weight" output_port_id="model0.conv2.conv1.weight" />
+		<IR name="model0.conv2.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_2" output_port_id="180" />
+		<IR name="Conv_2" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="322" output_port_id="322" />
+		<IR name="322" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_3" output_port_id="321" />
+		<IR name="Conv_3" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_4" output_port_id="183" />
+		<IR name="Relu_4" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="MaxPool_5" output_port_id="184" />
+		<IR name="MaxPool_5" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model1.conv1.conv1.weight" output_port_id="model1.conv1.conv1.weight" />
+		<IR name="model1.conv1.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_6" output_port_id="185" />
+		<IR name="Conv_6" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="325" output_port_id="325" />
+		<IR name="325" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_7" output_port_id="324" />
+		<IR name="Conv_7" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_8" output_port_id="188" />
+		<IR name="Relu_8" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model1.conv2.conv1.weight" output_port_id="model1.conv2.conv1.weight" />
+		<IR name="model1.conv2.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_9" output_port_id="189" />
+		<IR name="Conv_9" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="328" output_port_id="328" />
+		<IR name="328" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_10" output_port_id="327" />
+		<IR name="Conv_10" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_11" output_port_id="192" />
+		<IR name="Relu_11" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model2.conv1.conv1.weight" output_port_id="model2.conv1.conv1.weight" />
+		<IR name="model2.conv1.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_12" output_port_id="193" />
+		<IR name="Conv_12" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="331" output_port_id="331" />
+		<IR name="331" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_13" output_port_id="330" />
+		<IR name="Conv_13" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_14" output_port_id="196" />
+		<IR name="Relu_14" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model2.conv2.conv1.weight" output_port_id="model2.conv2.conv1.weight" />
+		<IR name="model2.conv2.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_15" output_port_id="197" />
+		<IR name="Conv_15" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="334" output_port_id="334" />
+		<IR name="334" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_16" output_port_id="333" />
+		<IR name="Conv_16" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_17" output_port_id="200" />
+		<IR name="Relu_17" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="MaxPool_18" output_port_id="201" />
+		<IR name="MaxPool_18" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model3.conv1.conv1.weight" output_port_id="model3.conv1.conv1.weight" />
+		<IR name="model3.conv1.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_19" output_port_id="202" />
+		<IR name="Conv_19" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="337" output_port_id="337" />
+		<IR name="337" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_20" output_port_id="336" />
+		<IR name="Conv_20" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_21" output_port_id="205" />
+		<IR name="Relu_21" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model3.conv2.conv1.weight" output_port_id="model3.conv2.conv1.weight" />
+		<IR name="model3.conv2.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_22" output_port_id="206" />
+		<IR name="Conv_22" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="340" output_port_id="340" />
+		<IR name="340" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_23" output_port_id="339" />
+		<IR name="Conv_23" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_24" output_port_id="209" />
+		<IR name="Relu_24" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="head.0.conv1.conv1.weight" output_port_id="head.0.conv1.conv1.weight" />
+		<IR name="head.0.conv1.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_46" output_port_id="237" />
+		<IR name="Conv_46" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="361" output_port_id="361" />
+		<IR name="361" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_47" output_port_id="360" />
+		<IR name="Conv_47" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_48" output_port_id="240" />
+		<IR name="Relu_48" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="head.0.conv2.conv1.weight" output_port_id="head.0.conv2.conv1.weight" />
+		<IR name="head.0.conv2.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_49" output_port_id="241" />
+		<IR name="Conv_49" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="head.0.conv2.conv2.weight" output_port_id="head.0.conv2.conv2.weight" />
+		<IR name="head.0.conv2.conv2.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_50" output_port_id="242" />
+		<IR name="Conv_50" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Transpose_51" output_port_id="243" />
+		<IR name="Transpose_51" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="271" output_port_id="271" />
+		<IR name="271" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Reshape_75" output_port_id="272" />
+		<IR name="Reshape_75" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="MaxPool_25" output_port_id="210" />
+		<IR name="MaxPool_25" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model4.conv1.conv1.weight" output_port_id="model4.conv1.conv1.weight" />
+		<IR name="model4.conv1.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_26" output_port_id="211" />
+		<IR name="Conv_26" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="343" output_port_id="343" />
+		<IR name="343" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_27" output_port_id="342" />
+		<IR name="Conv_27" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_28" output_port_id="214" />
+		<IR name="Relu_28" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model4.conv2.conv1.weight" output_port_id="model4.conv2.conv1.weight" />
+		<IR name="model4.conv2.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_29" output_port_id="215" />
+		<IR name="Conv_29" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="346" output_port_id="346" />
+		<IR name="346" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_30" output_port_id="345" />
+		<IR name="Conv_30" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_31" output_port_id="218" />
+		<IR name="Relu_31" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="head.1.conv1.conv1.weight" output_port_id="head.1.conv1.conv1.weight" />
+		<IR name="head.1.conv1.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_52" output_port_id="244" />
+		<IR name="Conv_52" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="364" output_port_id="364" />
+		<IR name="364" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_53" output_port_id="363" />
+		<IR name="Conv_53" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_54" output_port_id="247" />
+		<IR name="Relu_54" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="head.1.conv2.conv1.weight" output_port_id="head.1.conv2.conv1.weight" />
+		<IR name="head.1.conv2.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_55" output_port_id="248" />
+		<IR name="Conv_55" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="head.1.conv2.conv2.weight" output_port_id="head.1.conv2.conv2.weight" />
+		<IR name="head.1.conv2.conv2.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_56" output_port_id="249" />
+		<IR name="Conv_56" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Transpose_57" output_port_id="250" />
+		<IR name="Transpose_57" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="279" output_port_id="279" />
+		<IR name="279" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Reshape_81" output_port_id="280" />
+		<IR name="Reshape_81" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="MaxPool_32" output_port_id="219" />
+		<IR name="MaxPool_32" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model5.conv1.conv1.weight" output_port_id="model5.conv1.conv1.weight" />
+		<IR name="model5.conv1.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_33" output_port_id="220" />
+		<IR name="Conv_33" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="349" output_port_id="349" />
+		<IR name="349" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_34" output_port_id="348" />
+		<IR name="Conv_34" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_35" output_port_id="223" />
+		<IR name="Relu_35" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model5.conv2.conv1.weight" output_port_id="model5.conv2.conv1.weight" />
+		<IR name="model5.conv2.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_36" output_port_id="224" />
+		<IR name="Conv_36" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="352" output_port_id="352" />
+		<IR name="352" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_37" output_port_id="351" />
+		<IR name="Conv_37" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_38" output_port_id="227" />
+		<IR name="Relu_38" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="head.2.conv1.conv1.weight" output_port_id="head.2.conv1.conv1.weight" />
+		<IR name="head.2.conv1.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_58" output_port_id="251" />
+		<IR name="Conv_58" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="367" output_port_id="367" />
+		<IR name="367" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_59" output_port_id="366" />
+		<IR name="Conv_59" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_60" output_port_id="254" />
+		<IR name="Relu_60" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="head.2.conv2.conv1.weight" output_port_id="head.2.conv2.conv1.weight" />
+		<IR name="head.2.conv2.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_61" output_port_id="255" />
+		<IR name="Conv_61" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="head.2.conv2.conv2.weight" output_port_id="head.2.conv2.conv2.weight" />
+		<IR name="head.2.conv2.conv2.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_62" output_port_id="256" />
+		<IR name="Conv_62" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Transpose_63" output_port_id="257" />
+		<IR name="Transpose_63" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="287" output_port_id="287" />
+		<IR name="287" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Reshape_87" output_port_id="288" />
+		<IR name="Reshape_87" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="MaxPool_39" output_port_id="228" />
+		<IR name="MaxPool_39" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model6.conv1.conv1.weight" output_port_id="model6.conv1.conv1.weight" />
+		<IR name="model6.conv1.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_40" output_port_id="229" />
+		<IR name="Conv_40" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="355" output_port_id="355" />
+		<IR name="355" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_41" output_port_id="354" />
+		<IR name="Conv_41" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_42" output_port_id="232" />
+		<IR name="Relu_42" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="model6.conv2.conv1.weight" output_port_id="model6.conv2.conv1.weight" />
+		<IR name="model6.conv2.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_43" output_port_id="233" />
+		<IR name="Conv_43" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="358" output_port_id="358" />
+		<IR name="358" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_44" output_port_id="357" />
+		<IR name="Conv_44" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_45" output_port_id="236" />
+		<IR name="Relu_45" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="head.3.conv1.conv1.weight" output_port_id="head.3.conv1.conv1.weight" />
+		<IR name="head.3.conv1.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_64" output_port_id="258" />
+		<IR name="Conv_64" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="370" output_port_id="370" />
+		<IR name="370" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_65" output_port_id="369" />
+		<IR name="Conv_65" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Relu_66" output_port_id="261" />
+		<IR name="Relu_66" output_port_id="1" />
+	</map>
+	<map>
+		<framework name="head.3.conv2.conv1.weight" output_port_id="head.3.conv2.conv1.weight" />
+		<IR name="head.3.conv2.conv1.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_67" output_port_id="262" />
+		<IR name="Conv_67" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="head.3.conv2.conv2.weight" output_port_id="head.3.conv2.conv2.weight" />
+		<IR name="head.3.conv2.conv2.weight" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Conv_68" output_port_id="263" />
+		<IR name="Conv_68" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Transpose_69" output_port_id="264" />
+		<IR name="Transpose_69" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="295" output_port_id="295" />
+		<IR name="295" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Reshape_93" output_port_id="296" />
+		<IR name="Reshape_93" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Concat_94" output_port_id="297" />
+		<IR name="Concat_94" output_port_id="4" />
+	</map>
+	<map>
+		<framework name="306" output_port_id="306" />
+		<IR name="306" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Reshape_100" output_port_id="307" />
+		<IR name="Reshape_100" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="Slice_101/Split" output_port_id="308" />
+		<IR name="Slice_101/Split" output_port_id="3" />
+	</map>
+	<map>
+		<framework name="Slice_101/Split" output_port_id="309" />
+		<IR name="Slice_101/Split" output_port_id="4" />
+	</map>
+	<map>
+		<framework name="Slice_101/Split" output_port_id="310" />
+		<IR name="Slice_101/Split" output_port_id="5" />
+	</map>
+	<map>
+		<framework name="313" output_port_id="313" />
+		<IR name="313" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="Reshape_107" output_port_id="314" />
+		<IR name="Reshape_107" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="conf" output_port_id="conf" />
+		<IR name="conf" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="316" output_port_id="316" />
+		<IR name="316" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="iou" output_port_id="iou" />
+		<IR name="iou" output_port_id="2" />
+	</map>
+	<map>
+		<framework name="311" output_port_id="311" />
+		<IR name="311" output_port_id="0" />
+	</map>
+	<map>
+		<framework name="loc" output_port_id="loc" />
+		<IR name="loc" output_port_id="2" />
+	</map>
+</mapping>

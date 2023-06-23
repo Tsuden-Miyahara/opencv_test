@@ -26,9 +26,9 @@ def get_hash_pass():
 
 FEATURES = load_features()
 
-COSINE_THRESHOLD = 0.73
+COSINE_THRESHOLD = 0.72
 
-PASS_SCORE = 5
+PASS_SCORE = 10
 QR_PASSWORD = 'tsuden_guest'
 
 # VideoCaptureをオープン
@@ -109,9 +109,6 @@ while True:
         cv2.putText(img, text, (box[0], box[1] - 10),
                    cv2.FONT_HERSHEY_SIMPLEX, .75, color, 2)
 
-        
-
-
 
     isQ, q_decoded, q_pos, _ = qcd_detector.detectAndDecodeMulti(debug_image)
     if isQ:
@@ -132,12 +129,8 @@ while True:
             cv2.putText(img, txt, p[0].astype(int),
                       cv2.FONT_HERSHEY_SIMPLEX, .75, color, 2, cv2.LINE_AA)
 
-
-
-    if okay_flag:
-        okay += 1
-    else:
-        okay = 0
+    if okay_flag: okay += 1
+    else: okay = 0
 
     if okay >= PASS_SCORE:
         okay_count += 1
@@ -146,7 +139,6 @@ while True:
 
     cv2.imshow("Face Detection", img)
     k = cv2.waitKey(1) & 0xff
-    #if -1 < k: print(k)
     if k == ord('s'):
         if not os.path.exists('faces'):
             os.mkdir('faces')

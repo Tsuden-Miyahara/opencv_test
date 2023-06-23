@@ -74,7 +74,7 @@ for p in os.listdir(input_dir):
         x2 = int(person[2])
         y2 = int(person[3])
         conf = person[4]
-        print("{:.03f} ({},{})-({},{})".format(conf, x1, y1, x2, y2))
+        # print("{:.03f} ({},{})-({},{})".format(conf, x1, y1, x2, y2))
         color = (0, 255, 0)
         frame = cv2.rectangle(frame, (x1, y1), (x2, y2), color, int(2 * SCALE))
         frame = cv2.putText(frame, '{:.03f}'.format(conf), (x1, y1), cv2.FONT_HERSHEY_PLAIN, int(1 * SCALE), color, int(1 * SCALE), cv2.LINE_AA )
