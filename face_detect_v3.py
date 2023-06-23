@@ -8,6 +8,8 @@ import os
 import sys
 import glob
 import copy
+import qrcode
+from PIL import Image
 
 
 def load_features():
@@ -21,20 +23,29 @@ def load_features():
 
 
 def get_hash_pass():
-    txt = datetime.utcnow().strftime('%Y-%m-%d')
-    return hashlib.sha256(txt.encode()).hexdigest()
+    txt = datetime.datetime.utcnow().strftime('%Y%m%d')
+    return f'tsuden_{hashlib.sha256(txt.encode()).hexdigest()}_guest'
 
+
+# main
 FEATURES = load_features()
 
 COSINE_THRESHOLD = 0.72
 
 PASS_SCORE = 10
-QR_PASSWORD = 'tsuden_guest'
+QR_PASSWORD = get_hash_pass()
+QR_MASTER_PASSWORD = f'tsuden_{hashlib.sha256("19760312".encode()).hexdigest()}_master'
 
-# VideoCaptureをオープン
+
+def create_new_qr(pswrd, name):
+    qr = qrcode.make(pswrd)
+    os.makedirs('qr', exist_ok=True)
+    qr.save(f'qr/{name}.png')
+
+create_new_qr(QR_PASSWORD, 'code')
+create_new_qr(QR_MASTER_PASSWORD, 'master_code')
+
 cap = cv2.VideoCapture(0)
-
-# モデルを読み込む
 
 face_detector = cv2.FaceDetectorYN.create('model/face/face_detection_yunet_120x160.onnx', '', (160, 120))
 face_recognizer = cv2.FaceRecognizerSF.create('model/face/face_recognizer_fast.onnx', '')
@@ -112,8 +123,11 @@ while True:
 
     isQ, q_decoded, q_pos, _ = qcd_detector.detectAndDecodeMulti(debug_image)
     if isQ:
+        if not QR_PASSWORD == get_hash_pass():
+            QR_PASSWORD = get_hash_pass()
+            create_new_qr(QR_PASSWORD, 'code')
         for s, p in zip(q_decoded, q_pos):
-            if s == QR_PASSWORD:
+            if s in [QR_PASSWORD, QR_MASTER_PASSWORD]:
                 color = (80, 230, 90)
                 txt = 'Valid'
                 okay_flag = True
@@ -139,23 +153,23 @@ while True:
 
     cv2.imshow("Face Detection", img)
     k = cv2.waitKey(1) & 0xff
+    #if -1 < k: print(k)
     if k == ord('s'):
-        if not os.path.exists('faces'):
-            os.mkdir('faces')
-        cpath = lambda n, ext: f"faces/{str(n).zfill(6)}{ext}"
+        os.makedirs('faces/_img', exist_ok=True)
+        cpath = lambda n, d, ext: f"faces/{d}{str(n).zfill(6)}{ext}"
         i = 0
         for out in outs:
             while True:
                 i += 1
-                if not os.path.exists( cpath(i, '.npy') ):
-                    n = cpath(i, '')
+                if not os.path.exists( cpath(i, '', '.npy') ):
+                    n = cpath(i, '', '')
                     ft = face_recognizer.feature(out)
                     np.save(n, ft)
                     print(f'> {n}.npy')
                     print(ft)
                     print('=' * 10)
 
-                    # cv2.imwrite(cpath(i, '.jpg'), out)
+                    cv2.imwrite(cpath(i, '_img/', '.jpg'), out)
                     break
         FEATURES = load_features()
     elif k == ord('q') or k == 27: # ESC

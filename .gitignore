@@ -2,3 +2,5 @@
 
 faces/*.jpg
 faces/*.npy
+
+faces/*/*.jpg
