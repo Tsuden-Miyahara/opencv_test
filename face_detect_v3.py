@@ -55,6 +55,8 @@ def match(target):
     return False, ("", 0.0)
 
 okay = 0
+okay_count = 0
+okay_cause = ''
 
 while True:
     okay_flag = False
@@ -94,6 +96,7 @@ while True:
 
         if score > COSINE_THRESHOLD:
             okay_flag = True
+            okay_cause = f'User {id}'
 
 
         text = "{} ({:.2f})".format(id, score)
@@ -104,13 +107,13 @@ while True:
         cv2.rectangle(img, box, color, thickness, cv2.LINE_AA)
 
         cv2.putText(img, text, (box[0], box[1] - 10),
-                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, color)
+                   cv2.FONT_HERSHEY_SIMPLEX, .75, color, 2)
 
         
 
 
 
-    isQ, q_decoded, q_pos, _ = qcd_detector.detectAndDecodeMulti(img)
+    isQ, q_decoded, q_pos, _ = qcd_detector.detectAndDecodeMulti(debug_image)
     if isQ:
         for s, p in zip(q_decoded, q_pos):
             if s == QR_PASSWORD:
@@ -118,12 +121,16 @@ while True:
                 txt = 'Valid'
                 okay_flag = True
                 okay = PASS_SCORE
+                okay_cause = 'QR'.ljust(11)
+            elif not s:
+                color = (0, 0, 255)
+                txt = ''
             else:
                 color = (0, 0, 255)
                 txt = 'Invalid'
             cv2.polylines(img, [p.astype(int)], True, color, 2)
             cv2.putText(img, txt, p[0].astype(int),
-                      cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+                      cv2.FONT_HERSHEY_SIMPLEX, .75, color, 2, cv2.LINE_AA)
 
 
 
@@ -133,7 +140,8 @@ while True:
         okay = 0
 
     if okay >= PASS_SCORE:
-        print('Okay!')
+        okay_count += 1
+        print(f'Pass: {okay_count}\nCause: {okay_cause}\n\033[2A', end="")
         okay = 0
 
     cv2.imshow("Face Detection", img)
@@ -163,3 +171,5 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+
+print('')
