@@ -4,3 +4,5 @@ faces/*.jpg
 faces/*.npy
 
 faces/*/*.jpg
+
+qr/*.png
