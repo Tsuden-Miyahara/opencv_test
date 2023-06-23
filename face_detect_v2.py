@@ -1,12 +1,15 @@
-# インポート (適宜pipでインストールする)
+
 import imutils
 import numpy as np
 import cv2
 import hashlib
 import datetime
 import os
+import sys
 import glob
+import copy
 
+from _yunet import YuNetONNX, draw_debug
 
 def load_features():
     fes = []
@@ -32,10 +35,12 @@ QR_PASSWORD = 'tsuden_guest'
 cap = cv2.VideoCapture(0)
 
 # モデルを読み込む
-"""
-https://drive.google.com/file/d/1ClK9WiB492c5OZFKveF3XiHCejoOxINW/view
-"""
-detect_net = cv2.dnn.readNetFromCaffe('model/face/deploy.prototxt', 'model/face/res10_300x300_ssd_iter_140000.caffemodel')
+
+face_detector = cv2.FaceDetectorYN.create('model/face/face_detection_yunet_120x160.onnx', '', (160, 120))
+yunet = YuNetONNX(
+    # model_path='model/face/yunet_2023mar.onnx'
+    model_path='model/face/face_detection_yunet_120x160.onnx'
+)
 face_recognizer = cv2.FaceRecognizerSF.create('model/face/face_recognizer_fast.onnx', '')
 
 qcd_detector = cv2.QRCodeDetector()
@@ -56,20 +61,75 @@ def match(target):
 okay = 0
 
 while True:
-    ret, frame = cap.read()
+    okay_flag = False
+    outs = []
+    ret, img = cap.read()
 
-    img = imutils.resize(frame, width=764)
-    (h, w) = img.shape[:2]
-    blob = cv2.dnn.blobFromImage(cv2.resize(img, (300, 300)), 1.0, (300, 300), (104.0, 177.0, 123.0))
+    # img = imutils.resize(frame, width=764)
+    clone = copy.deepcopy(img)
+    w, h = [160, 120]
 
-    detect_net.setInput(blob)
-    detections = detect_net.forward()
+    bboxes, landmarks, scores = yunet.inference(img)
+
+    image_width, image_height = img.shape[1], img.shape[0]
+    debug_image = copy.deepcopy(img)
+
+
+    """
+    face_detector.setInputSize(img.shape[:2][::-1])
+    _, faces = face_detector.detect(img)
+    if len(fs):
+        af = face_recognizer.alignCrop(img, fs[0])
+        cv2.imwrite('test.jpg', af)
+    """
+
+    for bbox, landmark, score in zip(bboxes, landmarks, scores):
+        if COSINE_THRESHOLD > score:
+            continue
+        
+        # 顔バウンディングボックス
+        x1 = int(image_width  * (bbox[0] / w))
+        y1 = int(image_height * (bbox[1] / h))
+        x2 = int(image_width  * (bbox[2] / w)) + x1
+        y2 = int(image_height * (bbox[3] / h)) + y1
+
+
+
+        """
+        aligned_face = face_recognizer.alignCrop(img, bbox)
+        face_feature = face_recognizer.feature(aligned_face)
+        outs.append( aligned_face )
+        """
+        face = debug_image[y1:y2, x1:x2]
+        face_feature = face_recognizer.feature(face)
+        outs.append( face )
+
+
+        result, user = match(face_feature)
+        
+        id, score = user if result else ("?", 0.0)
+        color = (80, 230, 90) if result else (0, 0, 255)
+
+        if score > COSINE_THRESHOLD:
+            okay_flag = True
+
+
+        text = "{} ({:.2f})".format(id, score)
+
+
+        cv2.rectangle(img, (x1, y1), (x2, y2), color, 2)
+        cv2.putText(img, text, (x1, y1 + 12),
+                   cv2.FONT_HERSHEY_SIMPLEX, 0.5, color)
+
+        # 顔キーポイント
+        for _, landmark_point in enumerate(landmark):
+            x = int(image_width * (landmark_point[0] / w))
+            y = int(image_height * (landmark_point[1] / h))
+            cv2.circle(img, (x, y), 2, color, 2)
+
+
 
     isQ, q_decoded, q_pos, _ = qcd_detector.detectAndDecodeMulti(img)
-
-    copy = imutils.rotate(img, 0)
-    okay_flag = False
-
     if isQ:
         for s, p in zip(q_decoded, q_pos):
             if s == QR_PASSWORD:
@@ -83,41 +143,6 @@ while True:
             cv2.putText(img, txt, p[0].astype(int),
                       cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
-
-    outs = []
-    #bgr
-    for i in range(0, detections.shape[2]):
-        confidence = detections[0, 0, i, 2]
-        if confidence > 0.5:
-            color = (0, 0, 255)
-            if confidence > 0.95:
-                color = (80, 230, 90)
-            elif confidence > 0.8:
-                color = (80, 230, 190)
-
-            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-            (startX, startY, endX, endY) = box.astype("int")
-            face_img = copy[startY:endY, startX:endX]
-
-            print((startY, endY, startX, endX))
-
-            # aligned_face_img = face_recognizer.alignCrop(face_img, copy)
-
-            outs.append( face_img )
-
-            feature = face_recognizer.feature(face_img)
-            result, user = match(feature)
-            
-            id, score = user if result else ("?", 0.0)
-
-            if score >= COSINE_THRESHOLD:
-                okay_flag = True
-
-            text = "{} ({:.2f}): {:.2f}%".format(id, score, confidence * 100)
-            y = startY - 10 if startY - 10 > 10 else startY + 15
-            cv2.rectangle(img, (startX, startY), (endX, endY), color, 2)
-            cv2.putText(img, text, (startX, y),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.43, color if result else (0, 0, 255), 2)
 
 
     if okay_flag:
@@ -141,12 +166,14 @@ while True:
             while True:
                 i += 1
                 if not os.path.exists( cpath(i, '.npy') ):
-                    f = face_recognizer.feature(out)
                     n = cpath(i, '')
-                    np.save(n, f)
+                    ft = face_recognizer.feature(out)
+                    np.save(n, ft)
                     print(f'> {n}.npy')
-                    print(f)
+                    print(ft)
                     print('=' * 10)
+
+                    cv2.imwrite(cpath(i, '.jpg'), out)
                     break
         FEATURES = load_features()
     elif k == ord('q') or k == 27: # ESC
