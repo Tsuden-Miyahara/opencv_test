@@ -1,17 +1,19 @@
 
-import imutils
+
 import numpy as np
 import cv2
 import hashlib
 import datetime
 import os
-import sys
 import glob
 import copy
 import qrcode
 from PIL import Image
 
 
+
+
+# variables start
 def load_features():
     fes = []
     files = glob.glob(os.path.join('faces', "*.npy"))
@@ -21,15 +23,12 @@ def load_features():
         fes.append((user_id, feature))
     return fes
 
-
 def get_hash_pass():
     now = datetime.datetime.utcnow()
     times = [datetime.timedelta(days=d) + now for d in range(32)]
     txts = [time.strftime('%Y%m%d') for time in times]
     return [hashlib.sha256(f'tsuden_{txt}_guest'.encode()).hexdigest() for txt in txts]
 
-
-# variables start
 FEATURES = load_features()
 
 COSINE_THRESHOLD = 0.72
@@ -53,13 +52,6 @@ def daily_qr():
 daily_qr()
 create_new_qr(QR_MASTER_PASSWORD, 'master_code')
 
-cap = cv2.VideoCapture(0)
-
-face_detector = cv2.FaceDetectorYN.create('model/face/face_detection_yunet_120x160.onnx', '', (160, 120))
-face_recognizer = cv2.FaceRecognizerSF.create('model/face/face_recognizer_fast.onnx', '')
-
-qcd_detector = cv2.QRCodeDetector()
-
 def match(target):
     results = []
     for element in FEATURES:
@@ -72,6 +64,15 @@ def match(target):
         if s > COSINE_THRESHOLD:
             return True, (FEATURES[i][0], s)
     return False, ("", 0.0)
+
+
+# main
+cap = cv2.VideoCapture(0)
+
+face_detector = cv2.FaceDetectorYN.create('model/face/face_detection_yunet_120x160.onnx', '', (160, 120))
+face_recognizer = cv2.FaceRecognizerSF.create('model/face/face_recognizer_fast.onnx', '')
+
+qcd_detector = cv2.QRCodeDetector()
 
 okay = 0
 okay_count = 0
@@ -86,27 +87,17 @@ while True:
     clone = copy.deepcopy(img)
     w, h = [160, 120]
 
-
     image_width, image_height = img.shape[1], img.shape[0]
     debug_image = copy.deepcopy(img)
-
 
     face_detector.setInputSize(img.shape[:2][::-1])
     _, faces = face_detector.detect(img)
     faces = faces if faces is not None else []
 
-    """
-    if len(fs):
-        af = face_recognizer.alignCrop(img, fs[0])
-        cv2.imwrite('test.jpg', af)
-    """
-
     for face in faces:
-        
         aligned_face = face_recognizer.alignCrop(img, face)
         face_feature = face_recognizer.feature(aligned_face)
         outs.append( aligned_face )
-
 
         result, user = match(face_feature)
         
@@ -117,17 +108,14 @@ while True:
             okay_flag = True
             okay_cause = f'User {id}'
 
-
         text = "{} ({:.2f})".format(id, score)
 
         box = list(map(int, face[:4]))
         color = (0, 255, 0) if result else (0, 0, 255)
         thickness = 2
         cv2.rectangle(img, box, color, thickness, cv2.LINE_AA)
-
         cv2.putText(img, text, (box[0], box[1] - 10),
                    cv2.FONT_HERSHEY_SIMPLEX, .75, color, 2)
-
 
     isQ, q_decoded, q_pos, _ = qcd_detector.detectAndDecodeMulti(debug_image)
     if isQ:
