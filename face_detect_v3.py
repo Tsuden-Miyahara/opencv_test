@@ -26,7 +26,7 @@ def load_features():
     return fes
 
 def get_hash_pass():
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(JST)
     times = [datetime.timedelta(days=d) + now for d in range(32)]
     txts = [time.strftime('%Y%m%d') for time in times]
     return [hashlib.sha256(f'tsuden_{txt}_guest'.encode()).hexdigest() for txt in txts]
@@ -156,8 +156,9 @@ while True:
     if okay >= PASS_SCORE:
         okay_count += 1
         print(f'Pass : {str(okay_count).ljust(11)}\nCause: {okay_cause}\n\033[2A', end="")
-        os.makedirs('faces/_img', exist_ok=True)
-        cv2.imwrite(f'faces/_img/{okay_cause}_utc0_{datetime.datetime.now(JST).strftime("%Y%m%d%H%M%S")}.jpg', img)
+        now = datetime.datetime.now(JST)
+        os.makedirs(f'faces/_img/{now.strftime("%Y%m%d")}', exist_ok=True)
+        cv2.imwrite(f'faces/_img/{now.strftime("%H%M%S_%f")}_{okay_cause}.jpg', img)
         okay = 0
 
     cv2.imshow("Face Detection", img)

@@ -1,8 +1,11 @@
 
 
 faces/*.jpg
+faces/*.png
 faces/*.npy
 
 faces/*/*.jpg
+faces/*/*.png
 
+qr/*.jpg
 qr/*.png
