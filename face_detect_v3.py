@@ -157,8 +157,9 @@ while True:
         okay_count += 1
         print(f'Pass : {str(okay_count).ljust(11)}\nCause: {okay_cause}\n\033[2A', end="")
         now = datetime.datetime.now(JST)
-        os.makedirs(f'faces/_img/{now.strftime("%Y%m%d")}', exist_ok=True)
-        cv2.imwrite(f'faces/_img/{now.strftime("%H%M%S_%f")}_{okay_cause}.jpg', img)
+        _dir = f'faces/_img/{now.strftime("%Y%m%d")}'
+        os.makedirs(_dir, exist_ok=True)
+        cv2.imwrite(f'{_dir}/{now.strftime("%H%M%S_%f")}_{okay_cause}.jpg', img)
         okay = 0
 
     cv2.imshow("Face Detection", img)
