@@ -23,8 +23,10 @@ def load_features():
 
 
 def get_hash_pass():
-    txt = datetime.datetime.utcnow().strftime('%Y%m%d')
-    return f'tsuden_{hashlib.sha256(txt.encode()).hexdigest()}_guest'
+    now = datetime.datetime.utcnow()
+    times = [datetime.timedelta(days=d) + now for d in range(32)]
+    txts = [time.strftime('%Y%m%d') for time in times]
+    return [hashlib.sha256(f'tsuden_{txt}_guest'.encode()).hexdigest() for txt in txts]
 
 
 # variables start
@@ -34,16 +36,21 @@ COSINE_THRESHOLD = 0.72
 
 PASS_SCORE = 10
 
-QR_PASSWORD = get_hash_pass()
-QR_MASTER_PASSWORD = f'tsuden_{hashlib.sha256("19760312".encode()).hexdigest()}_master'
+QR_PASSWORDS = get_hash_pass()
+QR_MASTER_PASSWORD = hashlib.sha256("tsuden_19760312_master".encode()).hexdigest()
 # variables end
 
 def create_new_qr(pswrd, name):
-    qr = qrcode.make(pswrd)
+    qr = qrcode.make(pswrd, error_correction=qrcode.constants.ERROR_CORRECT_H)
     os.makedirs('qr', exist_ok=True)
     qr.save(f'qr/{name}.png')
 
-create_new_qr(QR_PASSWORD, 'code')
+def daily_qr():
+    create_new_qr(QR_PASSWORDS[0] , 'code_today')
+    create_new_qr(QR_PASSWORDS[7] , 'code_until_7days')
+    create_new_qr(QR_PASSWORDS[31], 'code_until_31days')
+
+daily_qr()
 create_new_qr(QR_MASTER_PASSWORD, 'master_code')
 
 cap = cv2.VideoCapture(0)
@@ -124,13 +131,20 @@ while True:
 
     isQ, q_decoded, q_pos, _ = qcd_detector.detectAndDecodeMulti(debug_image)
     if isQ:
-        if not QR_PASSWORD == get_hash_pass():
-            QR_PASSWORD = get_hash_pass()
-            create_new_qr(QR_PASSWORD, 'code')
+        if not QR_PASSWORDS == get_hash_pass():
+            QR_PASSWORDS = get_hash_pass()
+            daily_qr()
         for s, p in zip(q_decoded, q_pos):
-            if s in [QR_PASSWORD, QR_MASTER_PASSWORD]:
+            if s in QR_PASSWORDS:
                 color = (80, 230, 90)
-                txt = 'Valid'
+                n = QR_PASSWORDS.index(s)
+                txt = 'Valid for today only.' if n == 0 else f'Valid until {n} day{"" if n == 1 else "s"} later.'
+                okay_flag = True
+                okay = PASS_SCORE
+                okay_cause = 'QR'.ljust(11)
+            elif s == QR_MASTER_PASSWORD:
+                color = (80, 230, 90)
+                txt = 'Valid.'
                 okay_flag = True
                 okay = PASS_SCORE
                 okay_cause = 'QR'.ljust(11)
@@ -139,7 +153,7 @@ while True:
                 txt = ''
             else:
                 color = (0, 0, 255)
-                txt = 'Invalid'
+                txt = 'Invalid.'
             cv2.polylines(img, [p.astype(int)], True, color, 2)
             cv2.putText(img, txt, p[0].astype(int),
                       cv2.FONT_HERSHEY_SIMPLEX, .75, color, 2, cv2.LINE_AA)
