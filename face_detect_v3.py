@@ -14,6 +14,8 @@ from PIL import Image
 
 
 # variables start
+JST = datetime.timezone(datetime.timedelta(hours=+9), 'JST')
+
 def load_features():
     fes = []
     files = glob.glob(os.path.join('faces', "*.npy"))
@@ -31,7 +33,7 @@ def get_hash_pass():
 
 FEATURES = load_features()
 
-COSINE_THRESHOLD = 0.72
+COSINE_THRESHOLD = 0.75
 
 PASS_SCORE = 10
 
@@ -72,7 +74,7 @@ cap = cv2.VideoCapture(0)
 face_detector = cv2.FaceDetectorYN.create('model/face/face_detection_yunet_120x160.onnx', '', (160, 120))
 face_recognizer = cv2.FaceRecognizerSF.create('model/face/face_recognizer_fast.onnx', '')
 
-qcd_detector = cv2.QRCodeDetector()
+qr_detector = cv2.QRCodeDetector()
 
 okay = 0
 okay_count = 0
@@ -106,7 +108,7 @@ while True:
 
         if score > COSINE_THRESHOLD:
             okay_flag = True
-            okay_cause = f'User {id}'
+            okay_cause = f'User_{id}'
 
         text = "{} ({:.2f})".format(id, score)
 
@@ -117,7 +119,7 @@ while True:
         cv2.putText(img, text, (box[0], box[1] - 10),
                    cv2.FONT_HERSHEY_SIMPLEX, .75, color, 2)
 
-    isQ, q_decoded, q_pos, _ = qcd_detector.detectAndDecodeMulti(debug_image)
+    isQ, q_decoded, q_pos, _ = qr_detector.detectAndDecodeMulti(debug_image)
     if isQ:
         if not QR_PASSWORDS == get_hash_pass():
             QR_PASSWORDS = get_hash_pass()
@@ -149,17 +151,20 @@ while True:
     if okay_flag: okay += 1
     else: okay = 0
 
+    cpath = lambda n, d, ext: f"faces/{d}{str(n).zfill(6)}{ext}"
+    
     if okay >= PASS_SCORE:
         okay_count += 1
         print(f'Pass : {str(okay_count).ljust(11)}\nCause: {okay_cause}\n\033[2A', end="")
+        os.makedirs('faces/_img', exist_ok=True)
+        cv2.imwrite(f'faces/_img/{okay_cause}_utc0_{datetime.datetime.now(JST).strftime("%Y%m%d%H%M%S")}.jpg', img)
         okay = 0
 
     cv2.imshow("Face Detection", img)
     k = cv2.waitKey(1) & 0xff
     #if -1 < k: print(k)
     if k == ord('s'):
-        os.makedirs('faces/_img', exist_ok=True)
-        cpath = lambda n, d, ext: f"faces/{d}{str(n).zfill(6)}{ext}"
+        os.makedirs('faces', exist_ok=True)
         i = 0
         for out in outs:
             while True:
@@ -171,8 +176,6 @@ while True:
                     print(f'> {n}.npy')
                     print(ft)
                     print('=' * 10)
-
-                    cv2.imwrite(cpath(i, '_img/', '.jpg'), out)
                     break
         FEATURES = load_features()
     elif k == ord('q') or k == 27: # ESC
