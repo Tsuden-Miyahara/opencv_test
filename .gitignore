@@ -7,5 +7,8 @@ faces/*.npy
 faces/*/*.jpg
 faces/*/*.png
 
+faces/*/*/*.jpg
+faces/*/*/*.png
+
 qr/*.jpg
 qr/*.png
