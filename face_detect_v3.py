@@ -149,7 +149,7 @@ while True:
 
     if okay >= PASS_SCORE:
         okay_count += 1
-        print(f'Pass: {okay_count}\nCause: {okay_cause}\n\033[2A', end="")
+        print(f'Pass : {str(okay_count).ljust(11)}\nCause: {okay_cause}\n\033[2A', end="")
         okay = 0
 
     cv2.imshow("Face Detection", img)
